@@ -1,35 +1,27 @@
-<body>
-  <div class="container">
-    <h1>Welcome to NILGuard</h1>
-    <p>Your AI-powered NIL compliance tool is coming soon.</p>
+const response = await fetch("https://your-backend-url/api/analyze", {
+const response = await fetch("https://nilguard-backend-production.up.railway.app/api/analyze", {
+<script>
+  document.getElementById("contractForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const contractText = document.getElementById("contractInput").value;
+    const resultDiv = document.getElementById("analysisResult");
+    resultDiv.innerHTML = "Analyzing...";
 
-    <h2>Smart Contract Analyzer</h2>
-    <form id="contractForm">
-      <textarea id="contractInput" rows="10" cols="60" placeholder="Paste your NIL contract here..."></textarea><br>
-      <button type="submit">Analyze Contract</button>
-    </form>
+    try {
+      const response = await fetch("https://nilguard-backend-production.up.railway.app/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contractText }),
+      });
 
-    <div id="analysisResult"></div>
-  </div>
+      const data = await response.json();
+      resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+    } catch (error) {
+      resultDiv.innerHTML = "❌ Error analyzing contract.";
+    }
+  });
+</script>
 
-  <script>
-    document.getElementById("contractForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const contractText = document.getElementById("contractInput").value;
-      const resultDiv = document.getElementById("analysisResult");
-      resultDiv.innerHTML = "Analyzing...";
-
-      try {
-        const response = await fetch("https://your-backend-url/api/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contractText }),
-        });
-
-        const data = await response.json();
-        resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-      } catch (error) {
-        resultDiv.innerHTML = "❌ Error analyzing contract.";
       }
     });
   </script>
